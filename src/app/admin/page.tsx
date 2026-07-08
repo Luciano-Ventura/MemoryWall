@@ -5,12 +5,14 @@ export const revalidate = 0; // Para dev/demo
 
 export default async function AdminDashboard() {
   const supabase = await createClient();
-  
-  // Para fins de testes, buscando da view pública. Num ambiente real autenticado, 
-  // bateriamos na tabela 'events' e o RLS filtraria pelo client dono.
+  const { data: { user } } = await supabase.auth.getUser();
+  const { data: client } = await supabase.from('clients').select('id').eq('user_id', user?.id).single();
+
+  // Busca os eventos filtrando pelo client_id para não misturar com eventos de outros usuários
   const { data: events, error } = await supabase
     .from('events')
     .select('*')
+    .eq('client_id', client?.id || '00000000-0000-0000-0000-000000000000')
     .order('name');
     
   if (error) console.error("Erro ao buscar eventos:", error);
