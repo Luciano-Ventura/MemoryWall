@@ -53,7 +53,8 @@ export default function DisplayWall({ eventId, animationStyle }: DisplayWallProp
         },
         (payload) => {
           // Se for uma nova submissão aprovada ou atualizada para aprovada, joga pro topo
-          if (payload.new && payload.new.status === 'approved') {
+          const newPayload = payload.new as any;
+          if (newPayload && newPayload.status === 'approved') {
             const newSub = payload.new as Submission;
             setSubmissions(prev => {
               const exists = prev.find(s => s.id === newSub.id);
