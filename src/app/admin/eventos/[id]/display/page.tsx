@@ -30,7 +30,7 @@ export default async function PrintableDisplayPage({
       {/* Botão flutuante que não aparece na impressão */}
       <div className="fixed top-4 right-4 print:hidden">
         <button 
-          onClick="window.print()" 
+          id="print-btn"
           className="bg-slate-800 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:bg-slate-700 transition-colors"
         >
           Imprimir / Salvar PDF
@@ -67,7 +67,7 @@ export default async function PrintableDisplayPage({
       {/* Script inline simples para lidar com o click */}
       <script dangerouslySetInnerHTML={{
         __html: `
-          const btn = document.querySelector('button');
+          const btn = document.getElementById('print-btn');
           if (btn) btn.onclick = () => window.print();
         `
       }} />
