@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useCallback } from 'react';
 import { supabase } from '@/lib/supabase/client';
-import { Camera, ImageOff, ArrowLeft } from 'lucide-react';
+import { Camera, ImageOff, ArrowLeft, X } from 'lucide-react';
 import Link from 'next/link';
 
 interface Submission {
@@ -21,6 +21,7 @@ interface GuestGalleryProps {
 export default function GuestGallery({ eventId, eventSlug }: GuestGalleryProps) {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedSub, setSelectedSub] = useState<Submission | null>(null);
 
   const fetchSubmissions = useCallback(async () => {
     const { data, error } = await supabase
@@ -102,37 +103,64 @@ export default function GuestGallery({ eventId, eventSlug }: GuestGalleryProps) 
           <p className="text-sm opacity-70 font-body">Seja o primeiro a enviar uma foto para a galeria!</p>
         </div>
       ) : (
-        <div className="columns-1 sm:columns-2 gap-4 space-y-4">
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-1 sm:gap-2">
           {submissions.map((sub) => (
-            <div key={sub.id} className="break-inside-avoid bg-white/95 backdrop-blur-sm rounded-2xl shadow-md overflow-hidden animate-in fade-in zoom-in-95 duration-500">
-              {sub.photo_url && (
+            <div 
+              key={sub.id} 
+              onClick={() => setSelectedSub(sub)}
+              className="aspect-square bg-slate-200 cursor-pointer overflow-hidden relative group"
+            >
+              {sub.photo_url ? (
                 <img 
                   src={sub.photo_url} 
                   alt="Momento da festa" 
-                  className="w-full h-auto object-cover"
+                  className="w-full h-full object-cover transition-transform duration-300 group-active:scale-95"
                   loading="lazy"
                 />
-              )}
-              {sub.message && (
-                <div className="p-4">
-                  <p className="text-slate-800 font-body text-sm whitespace-pre-wrap">{sub.message}</p>
-                  {sub.guest_name && (
-                    <p className="text-xs font-bold text-slate-500 mt-2 font-display uppercase tracking-wider text-right">
-                      {sub.guest_name}
-                    </p>
-                  )}
-                </div>
-              )}
-              {/* Se tiver apenas nome sem recado nem foto, aparece aqui (caso raro) */}
-              {!sub.message && sub.guest_name && !sub.photo_url && (
-                <div className="p-4">
-                  <p className="text-xs font-bold text-slate-500 font-display uppercase tracking-wider text-center">
-                    Enviado por {sub.guest_name}
-                  </p>
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-white p-2 text-center transition-transform duration-300 group-active:scale-95">
+                  <p className="text-xs font-body line-clamp-4 text-slate-600">{sub.message}</p>
                 </div>
               )}
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Modal de Foto Expandida */}
+      {selectedSub && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm animate-in fade-in duration-200">
+          <button 
+            onClick={() => setSelectedSub(null)}
+            className="absolute top-4 right-4 z-50 p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
+          >
+            <X className="w-6 h-6" />
+          </button>
+          
+          <div className="relative w-full max-w-lg max-h-[90vh] flex flex-col bg-slate-900 rounded-2xl overflow-hidden shadow-2xl animate-in zoom-in-95 duration-300">
+            {selectedSub.photo_url && (
+              <div className="flex-1 min-h-0 bg-black flex items-center justify-center">
+                <img 
+                  src={selectedSub.photo_url} 
+                  alt="Expandida" 
+                  className="w-full h-full object-contain max-h-[65vh]" 
+                />
+              </div>
+            )}
+            
+            {(selectedSub.message || selectedSub.guest_name) && (
+              <div className="p-6 bg-white/95 backdrop-blur shrink-0">
+                {selectedSub.message && (
+                  <p className="text-slate-800 font-body text-base whitespace-pre-wrap">{selectedSub.message}</p>
+                )}
+                {selectedSub.guest_name && (
+                  <p className="text-sm font-bold text-slate-500 mt-3 font-display uppercase tracking-wider text-right">
+                    {selectedSub.guest_name}
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       )}
     </div>
