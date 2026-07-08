@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase/client';
 import { Save, Loader2, Download, Archive, Trash2 } from 'lucide-react';
 import JSZip from 'jszip';
@@ -8,6 +9,7 @@ import { saveAs } from 'file-saver';
 import { deleteEvent } from '@/app/admin/eventos/[id]/actions';
 
 export default function ConfigTab({ event }: { event: any }) {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: event.name || '',
     slug: event.slug || '',
@@ -121,6 +123,9 @@ export default function ConfigTab({ event }: { event: any }) {
       const res = await deleteEvent(event.id);
       if (res?.error) {
         throw new Error(res.error);
+      }
+      if (res?.success) {
+        router.push('/admin');
       }
     } catch (err: any) {
       console.error(err);

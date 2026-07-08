@@ -1,7 +1,6 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
 
 export async function deleteEvent(eventId: string) {
   const supabase = await createClient()
@@ -37,12 +36,16 @@ export async function deleteEvent(eventId: string) {
   await supabase.from('event_themes').delete().eq('event_id', eventId)
 
   // 5. Por fim, deletar o evento
-  const { error } = await supabase.from('events').delete().eq('id', eventId)
+  const { data, error } = await supabase.from('events').delete().eq('id', eventId).select('id')
   
   if (error) {
     console.error("Erro ao deletar evento:", error)
     return { error: 'Erro ao deletar o evento. Verifique as permissões (RLS).' }
   }
 
-  redirect('/admin')
+  if (!data || data.length === 0) {
+    return { error: 'Você não tem permissão para excluir. Você rodou as regras de segurança no SQL Editor?' }
+  }
+
+  return { success: true }
 }
