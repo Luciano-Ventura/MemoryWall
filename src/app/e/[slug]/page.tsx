@@ -2,7 +2,8 @@ import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 import { ThemeProvider, EventTheme } from '@/components/ThemeProvider';
 import GuestForm from '@/components/guest/GuestForm';
-import { Camera } from 'lucide-react';
+import { Camera, Images } from 'lucide-react';
+import Link from 'next/link';
 
 // Evita que cada novo acesso bata no banco no mesmo segundo
 export const revalidate = 60; 
@@ -59,13 +60,25 @@ export default async function GuestPage({
             </div>
           </div>
         ) : (
-          <GuestForm 
-            eventId={event.id}
-            welcomeMessage={event.welcome_message}
-            allowGuestName={event.allow_guest_name}
-            moderationEnabled={event.moderation_enabled}
-            animationStyle={theme?.animation_style || 'none'}
-          />
+          <div className="flex flex-col h-full gap-6 pb-8">
+            <GuestForm 
+              eventId={event.id}
+              welcomeMessage={event.welcome_message}
+              allowGuestName={event.allow_guest_name}
+              moderationEnabled={event.moderation_enabled}
+              animationStyle={theme?.animation_style || 'none'}
+            />
+            
+            <div className="text-center mt-auto pt-4">
+              <Link 
+                href={`/e/${event.slug}/galeria`} 
+                className="inline-flex items-center gap-2 px-6 py-4 rounded-full bg-white/80 backdrop-blur-md shadow-lg text-slate-800 font-bold text-sm hover:bg-white transition-transform active:scale-95"
+              >
+                <Images className="w-5 h-5" style={{ color: 'var(--theme-primary)' }} />
+                Ver Galeria da Festa
+              </Link>
+            </div>
+          </div>
         )}
       </main>
     </ThemeProvider>
