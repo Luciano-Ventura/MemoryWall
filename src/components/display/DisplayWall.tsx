@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState, useCallback } from 'react';
 import { supabase } from '@/lib/supabase/client';
+import { AnimatePresence, motion } from 'framer-motion';
 
 interface Submission {
   id: string;
@@ -133,11 +134,16 @@ export default function DisplayWall({ eventId, animationStyle }: DisplayWallProp
       )}
 
       {/* Conteúdo Dinâmico */}
-      <div 
-        key={currentItem.id} // key id força remontagem e animação a cada troca
-        className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-16 animate-slide-up-fade"
-      >
-        {currentItem.photo_url && (
+      <AnimatePresence mode="wait">
+        <motion.div 
+          key={currentItem.id} // key id força remontagem e animação a cada troca
+          initial={{ opacity: 0, y: 40, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -40, scale: 0.95 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-16"
+        >
+          {currentItem.photo_url && (
           <div className="flex-1 w-full max-h-[85vh] flex justify-center">
             <img 
               src={currentItem.photo_url} 
@@ -163,7 +169,8 @@ export default function DisplayWall({ eventId, animationStyle }: DisplayWallProp
             </div>
           </div>
         )}
-      </div>
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }
