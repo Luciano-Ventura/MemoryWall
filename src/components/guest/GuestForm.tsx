@@ -9,10 +9,11 @@ interface GuestFormProps {
   eventId: string;
   welcomeMessage: string | null;
   allowGuestName: boolean;
+  moderationEnabled: boolean;
   animationStyle: string;
 }
 
-export default function GuestForm({ eventId, welcomeMessage, allowGuestName, animationStyle }: GuestFormProps) {
+export default function GuestForm({ eventId, welcomeMessage, allowGuestName, moderationEnabled, animationStyle }: GuestFormProps) {
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [message, setMessage] = useState('');
@@ -95,7 +96,8 @@ export default function GuestForm({ eventId, welcomeMessage, allowGuestName, ani
           event_id: eventId,
           guest_name: cleanName || null,
           message: cleanMessage || null,
-          photo_url: photoUrl
+          photo_url: photoUrl,
+          status: moderationEnabled ? 'pending' : 'approved'
         });
 
       if (insertError) throw insertError;

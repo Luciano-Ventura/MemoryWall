@@ -63,6 +63,7 @@ export default async function GuestPage({
             eventId={event.id}
             welcomeMessage={event.welcome_message}
             allowGuestName={event.allow_guest_name}
+            moderationEnabled={event.moderation_enabled}
             animationStyle={theme?.animation_style || 'none'}
           />
         )}
