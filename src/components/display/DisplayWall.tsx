@@ -69,8 +69,9 @@ export default function DisplayWall({ eventId, animationStyle }: DisplayWallProp
           }
           
           // Se foi rejeitada, remove da lista
-          if (payload.new && payload.new.status === 'rejected') {
-            setSubmissions(prev => prev.filter(s => s.id !== payload.new.id));
+          const newPayloadRejected = payload.new as any;
+          if (newPayloadRejected && newPayloadRejected.status === 'rejected') {
+            setSubmissions(prev => prev.filter(s => s.id !== newPayloadRejected.id));
           }
         }
       )
