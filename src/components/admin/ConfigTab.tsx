@@ -2,9 +2,10 @@
 
 import React, { useState } from 'react';
 import { supabase } from '@/lib/supabase/client';
-import { Save, Loader2, Download, Archive } from 'lucide-react';
+import { Save, Loader2, Download, Archive, Trash2 } from 'lucide-react';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
+import { deleteEvent } from '@/app/admin/eventos/[id]/actions';
 
 export default function ConfigTab({ event }: { event: any }) {
   const [formData, setFormData] = useState({
@@ -21,6 +22,7 @@ export default function ConfigTab({ event }: { event: any }) {
   
   const [isExporting, setIsExporting] = useState(false);
   const [exportProgress, setExportProgress] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
@@ -105,6 +107,25 @@ export default function ConfigTab({ event }: { event: any }) {
     } finally {
       setIsExporting(false);
       setTimeout(() => setExportProgress(0), 2000);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!window.confirm("ATENÇÃO: Tem certeza absoluta que deseja excluir este evento? TODAS as fotos, mensagens e configurações serão apagadas permanentemente. Essa ação não pode ser desfeita.")) {
+      return;
+    }
+    
+    setIsDeleting(true);
+    setMessage(null);
+    try {
+      const res = await deleteEvent(event.id);
+      if (res?.error) {
+        throw new Error(res.error);
+      }
+    } catch (err: any) {
+      console.error(err);
+      setMessage({ type: 'error', text: err.message || 'Erro ao excluir evento.' });
+      setIsDeleting(false);
     }
   };
 
@@ -231,6 +252,22 @@ export default function ConfigTab({ event }: { event: any }) {
         {isSaving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
         Salvar Configurações
       </button>
+      <div className="pt-8 border-t border-slate-200">
+        <div className="p-6 bg-red-50 rounded-xl border border-red-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <h4 className="font-bold text-red-900">Zona de Perigo</h4>
+            <p className="text-sm text-red-700 mt-1">Excluir permanentemente este evento e todas as suas fotos.</p>
+          </div>
+          <button 
+            onClick={handleDelete}
+            disabled={isDeleting || isSaving}
+            className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg flex items-center gap-2 transition-colors disabled:opacity-50 whitespace-nowrap"
+          >
+            {isDeleting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Trash2 className="w-5 h-5" />}
+            Excluir Evento
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

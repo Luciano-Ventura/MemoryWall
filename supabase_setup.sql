@@ -111,3 +111,9 @@ create policy "Leitura publica de fotos" on storage.objects for select using ( b
 
 -- 5. Habilitar Realtime
 alter publication supabase_realtime add table submissions;
+
+-- Adicionado para permitir EXCLUIR Evento
+create policy "Client deleta próprio evento" on events for delete using (client_id in (select id from clients where user_id = auth.uid()));
+
+-- Adicionado para permitir EXCLUIR as fotos do bucket
+create policy "Delete publico de fotos" on storage.objects for delete using (bucket_id = 'event-photos');
