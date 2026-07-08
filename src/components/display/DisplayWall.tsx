@@ -88,7 +88,7 @@ export default function DisplayWall({ eventId, animationStyle }: DisplayWallProp
 
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % submissions.length);
-    }, 8000); 
+    }, 5000); 
 
     return () => clearInterval(timer);
   }, [submissions.length]);
@@ -135,7 +135,7 @@ export default function DisplayWall({ eventId, animationStyle }: DisplayWallProp
       {/* Conteúdo Dinâmico */}
       <div 
         key={currentItem.id} // key id força remontagem e animação a cada troca
-        className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-16 animate-in slide-in-from-bottom-24 fade-in duration-1000 zoom-in-95"
+        className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-16 animate-slide-up-fade"
       >
         {currentItem.photo_url && (
           <div className="flex-1 w-full max-h-[85vh] flex justify-center">
