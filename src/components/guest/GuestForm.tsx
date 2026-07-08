@@ -4,6 +4,7 @@ import React, { useState, useRef } from 'react';
 import { Camera, Send, CheckCircle2, Loader2 } from 'lucide-react';
 import imageCompression from 'browser-image-compression';
 import { supabase } from '@/lib/supabase/client';
+import confetti from 'canvas-confetti';
 
 interface GuestFormProps {
   eventId: string;
@@ -103,6 +104,14 @@ export default function GuestForm({ eventId, welcomeMessage, allowGuestName, mod
       if (insertError) throw insertError;
 
       setIsSuccess(true);
+      
+      // Disparar confetes!
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#FF6B6B', '#4ECDC4', '#FFD93D'] // Cores vibrantes
+      });
       
     } catch (err: any) {
       console.error(err);

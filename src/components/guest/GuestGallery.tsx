@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useCallback } from 'react';
 import { supabase } from '@/lib/supabase/client';
-import { Camera, ImageOff, ArrowLeft, X } from 'lucide-react';
+import { Camera, ImageOff, ArrowLeft, X, Download } from 'lucide-react';
 import Link from 'next/link';
 
 interface Submission {
@@ -22,6 +22,28 @@ export default function GuestGallery({ eventId, eventSlug }: GuestGalleryProps) 
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedSub, setSelectedSub] = useState<Submission | null>(null);
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  const handleDownload = async (url: string, id: string) => {
+    try {
+      setIsDownloading(true);
+      const res = await fetch(url);
+      const blob = await res.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = blobUrl;
+      a.download = `memorywall-${id}.jpg`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(blobUrl);
+      document.body.removeChild(a);
+    } catch (err) {
+      console.error('Erro ao baixar a imagem', err);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   const fetchSubmissions = useCallback(async () => {
     const { data, error } = await supabase
@@ -139,12 +161,20 @@ export default function GuestGallery({ eventId, eventSlug }: GuestGalleryProps) 
           
           <div className="relative w-full max-w-lg max-h-[90vh] flex flex-col bg-slate-900 rounded-2xl overflow-hidden shadow-2xl animate-in zoom-in-95 duration-300">
             {selectedSub.photo_url && (
-              <div className="flex-1 min-h-0 bg-black flex items-center justify-center">
+              <div className="flex-1 min-h-0 bg-black flex items-center justify-center relative group">
                 <img 
                   src={selectedSub.photo_url} 
                   alt="Expandida" 
                   className="w-full h-full object-contain max-h-[65vh]" 
                 />
+                <button
+                  onClick={(e) => { e.stopPropagation(); handleDownload(selectedSub.photo_url!, selectedSub.id); }}
+                  disabled={isDownloading}
+                  className="absolute bottom-4 right-4 p-3 bg-white/90 backdrop-blur-md rounded-full text-slate-800 shadow-lg hover:bg-white transition-transform active:scale-95 disabled:opacity-50"
+                  title="Baixar Foto"
+                >
+                  <Download className={`w-5 h-5 ${isDownloading ? 'animate-bounce' : ''}`} />
+                </button>
               </div>
             )}
             

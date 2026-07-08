@@ -41,3 +41,16 @@ body {
 .font-display {
   font-family: var(--font-display);
 }
+
+@keyframes kenBurns {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    transform: scale(1.05) translate(-1%, -1%);
+  }
+}
+
+.animate-ken-burns {
+  animation: kenBurns 10s ease-out forwards;
+}

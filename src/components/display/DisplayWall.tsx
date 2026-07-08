@@ -144,12 +144,11 @@ export default function DisplayWall({ eventId, animationStyle }: DisplayWallProp
           className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-16"
         >
           {currentItem.photo_url && (
-          <div className="flex-1 w-full max-h-[85vh] flex justify-center">
+          <div className="flex-1 w-full max-h-[85vh] flex justify-center overflow-hidden rounded-2xl shadow-2xl">
             <img 
               src={currentItem.photo_url} 
-              alt="Momento do Evento" 
-              className="max-w-full max-h-[85vh] object-contain rounded-[3rem] shadow-2xl border-[12px]"
-              style={{ borderColor: 'var(--theme-secondary)' }}
+              alt="Momento" 
+              className="w-full h-full object-contain bg-black/5 rounded-2xl animate-ken-burns"
             />
           </div>
         )}

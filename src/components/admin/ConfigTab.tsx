@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase/client';
-import { Save, Loader2, Download, Archive, Trash2 } from 'lucide-react';
+import { Save, Loader2, Download, Archive, Trash2, ExternalLink, Printer } from 'lucide-react';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import { deleteEvent } from '@/app/admin/eventos/[id]/actions';
@@ -155,7 +155,7 @@ export default function ConfigTab({ event }: { event: any }) {
 
         <div>
           <label className="block text-sm font-semibold text-slate-700 mb-1">Slug (URL Público)</label>
-          <div className="flex rounded-lg overflow-hidden border border-slate-200 bg-slate-50 w-full">
+          <div className="flex rounded-lg overflow-hidden border border-slate-200 bg-slate-50 w-full mb-4">
             <span className="inline-flex items-center px-3 sm:px-4 py-2 text-slate-500 text-sm border-r border-slate-200 whitespace-nowrap">
               eventwall.app/e/
             </span>
@@ -167,6 +167,24 @@ export default function ConfigTab({ event }: { event: any }) {
               className="flex-1 px-3 sm:px-4 py-2 bg-transparent text-slate-600 outline-none w-full min-w-0 cursor-not-allowed"
               title="O link não pode ser alterado após a criação para não quebrar os QR Codes já impressos."
             />
+          </div>
+          <div className="flex flex-col gap-3">
+            <a 
+              href={`/e/${event.slug}`} 
+              target="_blank"
+              className="flex items-center justify-center gap-2 w-full py-3 bg-white border-2 border-slate-200 text-slate-700 rounded-xl font-bold hover:bg-slate-50 transition-colors"
+            >
+              <ExternalLink className="w-4 h-4" />
+              Abrir Página do Convidado
+            </a>
+            <a 
+              href={`/admin/eventos/${event.id}/display`} 
+              target="_blank"
+              className="flex items-center justify-center gap-2 w-full py-3 bg-slate-800 text-white rounded-xl font-bold hover:bg-slate-700 transition-colors"
+            >
+              <Printer className="w-4 h-4" />
+              Gerar Display de Mesa (PDF)
+            </a>
           </div>
           <p className="text-xs text-slate-500 mt-1">O link é fixo para evitar que convidados percam o acesso.</p>
         </div>
