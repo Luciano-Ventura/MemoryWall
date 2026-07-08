@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-inter);
+}
+
+:root {
+  /* Camada 1: Admin Wall - Identidade Neutra (Foco em gestao) */
+  --admin-bg: #f8fafc;
+  --admin-surface: #ffffff;
+  --admin-border: #e2e8f0;
+  --admin-text: #0f172a;
+  --admin-text-muted: #64748b;
+  --admin-primary: #0f172a;
+  
+  /* Camada 2: Tema Dinâmico do Evento (Valores Padrão de Fallback) */
+  --theme-primary: #FF6B6B;
+  --theme-secondary: #4ECDC4;
+  --theme-bg: #FFF8F0;
+  --theme-accent: #FFD93D;
+  --theme-text: #2D2D2D;
+  
+  --font-display: var(--font-inter);
+  --font-body: var(--font-inter);
+}
+
+body {
+  background-color: var(--admin-bg);
+  color: var(--admin-text);
+  font-family: var(--font-body);
+}
+
+/* Utilitários de Tema (Camada 2) - serão aplicados na raiz do Guest/Telao */
+.event-theme-layer {
+  background-color: var(--theme-bg);
+  color: var(--theme-text);
+  min-height: 100vh;
+  font-family: var(--font-body);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
