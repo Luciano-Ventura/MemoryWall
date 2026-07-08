@@ -176,12 +176,14 @@ export default function GuestForm({ eventId, welcomeMessage, allowGuestName, mod
               <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: 'var(--theme-bg)' }}>
                 <Camera className="w-8 h-8" style={{ color: 'var(--theme-primary)' }} />
               </div>
-              <p className="font-semibold text-slate-700 font-body">Tirar foto ou<br/>escolher da galeria</p>
+              <p className="font-semibold text-slate-700 font-body">Tirar foto na hora</p>
+              <p className="text-xs text-slate-500 mt-2 font-body opacity-80">(Apenas fotos tiradas no momento)</p>
             </div>
           )}
           <input 
             type="file" 
             accept="image/*" 
+            capture="environment"
             className="hidden" 
             ref={fileInputRef}
             onChange={handleFileChange}
