@@ -154,19 +154,21 @@ export default function ConfigTab({ event }: { event: any }) {
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-slate-700 mb-1">Slug (URL)</label>
-          <div className="flex rounded-lg overflow-hidden border border-slate-300 focus-within:ring-2 focus-within:ring-blue-500 w-full">
-            <span className="inline-flex items-center px-3 sm:px-4 py-2 bg-slate-100 text-slate-500 text-sm border-r border-slate-300 whitespace-nowrap">
+          <label className="block text-sm font-semibold text-slate-700 mb-1">Slug (URL Público)</label>
+          <div className="flex rounded-lg overflow-hidden border border-slate-200 bg-slate-50 w-full">
+            <span className="inline-flex items-center px-3 sm:px-4 py-2 text-slate-500 text-sm border-r border-slate-200 whitespace-nowrap">
               eventwall.app/e/
             </span>
             <input 
               type="text" 
               name="slug" 
               value={formData.slug} 
-              onChange={handleChange}
-              className="flex-1 px-3 sm:px-4 py-2 outline-none w-full min-w-0"
+              readOnly
+              className="flex-1 px-3 sm:px-4 py-2 bg-transparent text-slate-600 outline-none w-full min-w-0 cursor-not-allowed"
+              title="O link não pode ser alterado após a criação para não quebrar os QR Codes já impressos."
             />
           </div>
+          <p className="text-xs text-slate-500 mt-1">O link é fixo para evitar que convidados percam o acesso.</p>
         </div>
 
         <div>
