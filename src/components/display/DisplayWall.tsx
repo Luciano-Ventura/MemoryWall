@@ -137,37 +137,53 @@ export default function DisplayWall({ eventId, animationStyle }: DisplayWallProp
       <AnimatePresence mode="wait">
         <motion.div 
           key={currentItem.id} // key id força remontagem e animação a cada troca
-          initial={{ opacity: 0, y: 40, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: -40, scale: 0.95 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-16"
+          initial={{ opacity: 0, scale: 0.9, rotate: -2, y: 40 }}
+          animate={{ opacity: 1, scale: 1, rotate: 0, y: 0 }}
+          exit={{ opacity: 0, scale: 1.05, filter: "blur(10px)", transition: { duration: 0.4 } }}
+          transition={{ duration: 0.8, type: "spring", bounce: 0.4 }}
+          className="w-full max-w-6xl mx-auto relative z-10"
         >
-          {currentItem.photo_url && (
-          <div className="flex-1 w-full max-h-[85vh] flex justify-center overflow-hidden rounded-2xl shadow-2xl">
-            <img 
-              src={currentItem.photo_url} 
-              alt="Momento" 
-              className="w-full h-full object-contain bg-black/5 rounded-2xl animate-ken-burns"
-            />
-          </div>
-        )}
-        
-        {currentItem.message && (
-          <div className={`flex-1 flex flex-col justify-center ${!currentItem.photo_url ? 'items-center text-center w-full max-w-4xl mx-auto' : ''}`}>
-            <div className="bg-white/95 backdrop-blur-xl p-16 rounded-[4rem] shadow-2xl relative w-full border-t-[16px]" style={{ borderColor: 'var(--theme-primary)' }}>
-              <span className="text-[10rem] absolute -top-16 -left-8 opacity-10 font-display leading-none" style={{ color: 'var(--theme-primary)' }}>"</span>
-              <p className="text-6xl font-body leading-tight whitespace-pre-wrap relative z-10 font-medium" style={{ color: 'var(--theme-text)' }}>
-                {currentItem.message}
-              </p>
-              {currentItem.guest_name && (
-                <p className="text-4xl font-display font-bold mt-12 text-right" style={{ color: 'var(--theme-primary)' }}>
-                  — {currentItem.guest_name}
+          <div className="bg-white/95 backdrop-blur-xl p-8 md:p-14 rounded-[3rem] shadow-2xl relative flex flex-col md:flex-row items-center gap-12"
+               style={{ borderBottom: '12px solid var(--theme-primary)' }}>
+            
+            {/* Elemento decorativo de aspas */}
+            {currentItem.message && (
+               <span className="text-[15rem] absolute -top-12 -left-4 opacity-5 font-display leading-none z-0 pointer-events-none" style={{ color: 'var(--theme-primary)' }}>"</span>
+            )}
+
+            {currentItem.photo_url && (
+              <div className={`relative z-10 flex-shrink-0 w-full ${currentItem.message ? 'md:w-1/2' : 'max-w-3xl mx-auto'}`}>
+                {/* Polaroid styling */}
+                <div className="bg-white p-4 pb-8 md:pb-12 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] transform -rotate-2 hover:rotate-0 transition-transform duration-500">
+                  <div className="relative w-full h-[50vh] md:h-[500px] bg-slate-100 rounded-xl overflow-hidden flex items-center justify-center">
+                     {/* Blurred background for padding */}
+                     <div 
+                       className="absolute inset-0 bg-cover bg-center blur-2xl scale-125 opacity-40" 
+                       style={{ backgroundImage: `url(${currentItem.photo_url})` }} 
+                     />
+                     <img 
+                       src={currentItem.photo_url} 
+                       alt="Momento" 
+                       className="relative z-10 w-full h-full object-contain drop-shadow-xl"
+                     />
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {currentItem.message && (
+              <div className={`flex-1 flex flex-col justify-center relative z-10 ${!currentItem.photo_url ? 'items-center text-center w-full max-w-4xl mx-auto py-12' : ''}`}>
+                <p className={`${currentItem.photo_url ? 'text-4xl md:text-5xl' : 'text-5xl md:text-7xl'} font-body leading-tight whitespace-pre-wrap font-medium`} style={{ color: 'var(--theme-text)' }}>
+                  {currentItem.message}
                 </p>
-              )}
-            </div>
+                {currentItem.guest_name && (
+                  <p className={`${currentItem.photo_url ? 'text-2xl md:text-3xl' : 'text-3xl md:text-4xl'} font-display font-bold mt-10 text-right`} style={{ color: 'var(--theme-primary)' }}>
+                    — {currentItem.guest_name}
+                  </p>
+                )}
+              </div>
+            )}
           </div>
-        )}
         </motion.div>
       </AnimatePresence>
     </div>
