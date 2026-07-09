@@ -161,7 +161,7 @@ export default function LandingPage() {
               }
             ].map((s, i) => (
               <div key={i} className="flex flex-col items-center text-center p-8 rounded-3xl bg-slate-50 hover:bg-slate-100 transition-colors">
-                <span className={`text-6xl font-bold text-slate-200 mb-6 ${playfair.className}`}>{s.step}</span>
+                <span className={`text-6xl font-bold text-slate-300 mb-6 ${playfair.className}`}>{s.step}</span>
                 <h3 className="text-xl font-bold text-slate-800 mb-3">{s.title}</h3>
                 <p className="text-slate-600 leading-relaxed">{s.desc}</p>
               </div>
@@ -232,7 +232,8 @@ export default function LandingPage() {
                 <h3 className="text-3xl font-bold text-slate-800 mb-2">Evento Completo</h3>
                 <p className="text-slate-500 mb-6">Perfeito para casamentos, formaturas e eventos corporativos de médio a grande porte.</p>
                 <div className="flex items-baseline gap-2 mb-8">
-                  <span className="text-6xl font-bold text-slate-900">R$ 197</span>
+                  <span className="text-6xl font-bold text-slate-900">R$ 49</span>
+                  <span className="text-xl font-bold text-slate-900">,90</span>
                   <span className="text-slate-500 font-medium">/ por evento</span>
                 </div>
                 <Link 
@@ -252,7 +253,7 @@ export default function LandingPage() {
                     'Acesso ao Telão Interativo Premium',
                     'Painel de Moderação em Tempo Real',
                     'Personalização total de cores e fontes',
-                    'Galeria digital disponível por 12 meses',
+                    'Galeria digital disponível por 30 dias',
                     'Suporte prioritário via WhatsApp'
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-3">
