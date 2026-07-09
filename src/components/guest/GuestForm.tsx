@@ -204,7 +204,7 @@ export default function GuestForm({ eventId, welcomeMessage, allowGuestName, mod
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Escreva um recado (opcional)..."
-            className="w-full bg-slate-50 border-none rounded-xl p-4 resize-none h-24 font-body outline-none focus:ring-2 transition-shadow"
+            className="w-full bg-white border border-slate-300 rounded-xl p-4 resize-none h-24 font-body outline-none focus:ring-2 placeholder:text-slate-400 text-slate-800 transition-all shadow-sm hover:border-slate-400 focus:border-transparent"
             style={{ '--tw-ring-color': 'var(--theme-primary)' } as any}
           />
 
@@ -214,7 +214,7 @@ export default function GuestForm({ eventId, welcomeMessage, allowGuestName, mod
               value={guestName}
               onChange={(e) => setGuestName(e.target.value)}
               placeholder="Seu nome (opcional)"
-              className="w-full bg-slate-50 border-none rounded-xl p-4 font-body outline-none focus:ring-2 transition-shadow"
+              className="w-full bg-white border border-slate-300 rounded-xl p-4 font-body outline-none focus:ring-2 placeholder:text-slate-400 text-slate-800 transition-all shadow-sm hover:border-slate-400 focus:border-transparent"
               style={{ '--tw-ring-color': 'var(--theme-primary)' } as any}
             />
           )}
