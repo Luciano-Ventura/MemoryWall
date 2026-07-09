@@ -19,9 +19,10 @@ export interface EventTheme {
 interface ThemeProviderProps {
   children: React.ReactNode;
   theme: EventTheme | null;
+  showBackgroundImage?: boolean;
 }
 
-export function ThemeProvider({ children, theme }: ThemeProviderProps) {
+export function ThemeProvider({ children, theme, showBackgroundImage = true }: ThemeProviderProps) {
   // Se não houver tema, usa o fallback definido no globals.css
   if (!theme) {
     return <div className="event-theme-layer w-full min-h-screen">{children}</div>;
@@ -40,7 +41,7 @@ export function ThemeProvider({ children, theme }: ThemeProviderProps) {
   } as React.CSSProperties;
 
   // Background image é tratado de forma especial
-  if (theme.background_image_url) {
+  if (theme.background_image_url && showBackgroundImage) {
     style.backgroundImage = `url(${theme.background_image_url})`;
     style.backgroundSize = 'cover';
     style.backgroundPosition = 'center';

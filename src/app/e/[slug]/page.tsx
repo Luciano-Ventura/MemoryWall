@@ -41,7 +41,7 @@ export default async function GuestPage({
   const isEventActive = event.status === 'active';
 
   return (
-    <ThemeProvider theme={theme as EventTheme}>
+    <ThemeProvider theme={theme as EventTheme} showBackgroundImage={false}>
       <main className="w-full max-w-md mx-auto min-h-screen flex flex-col relative px-4 py-8">
         {!isEventActive ? (
           <div className="flex-1 flex flex-col items-center justify-center">
