@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Settings, Palette, CheckSquare, QrCode, ExternalLink } from 'lucide-react';
+import { Settings, Palette, CheckSquare, QrCode, ExternalLink, Image as ImageIcon } from 'lucide-react';
 import Link from 'next/link';
 import ConfigTab from './ConfigTab';
 import ThemeTab from './ThemeTab';
 import QrCodeTab from './QrCodeTab';
 import ModerationTab from './ModerationTab';
+import GalleryTab from './GalleryTab';
 
 interface EventDashboardProps {
   initialEvent: any;
@@ -14,12 +15,13 @@ interface EventDashboardProps {
 }
 
 export default function EventDashboard({ initialEvent, initialTheme }: EventDashboardProps) {
-  const [activeTab, setActiveTab] = useState<'config' | 'theme' | 'moderation' | 'qr'>('config');
+  const [activeTab, setActiveTab] = useState<'config' | 'theme' | 'moderation' | 'gallery' | 'qr'>('config');
 
   const tabs = [
     { id: 'config', label: 'Configurações', icon: Settings },
     { id: 'theme', label: 'Tema Visual', icon: Palette },
     ...(initialEvent.moderation_enabled ? [{ id: 'moderation', label: 'Moderação', icon: CheckSquare }] : []),
+    { id: 'gallery', label: 'Galeria', icon: ImageIcon },
     { id: 'qr', label: 'QR Code', icon: QrCode },
   ] as const;
 
@@ -89,6 +91,7 @@ export default function EventDashboard({ initialEvent, initialTheme }: EventDash
         {activeTab === 'config' && <ConfigTab event={initialEvent} />}
         {activeTab === 'theme' && <ThemeTab theme={initialTheme} eventId={initialEvent.id} />}
         {activeTab === 'moderation' && <ModerationTab eventId={initialEvent.id} />}
+        {activeTab === 'gallery' && <GalleryTab eventId={initialEvent.id} />}
         {activeTab === 'qr' && <QrCodeTab event={initialEvent} />}
       </div>
     </div>
