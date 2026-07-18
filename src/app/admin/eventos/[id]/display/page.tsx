@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { QRCodeSVG } from 'qrcode.react';
+import { QRCodeCanvas } from 'qrcode.react';
 import { Download, Loader2 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { notFound } from 'next/navigation';
@@ -49,6 +49,7 @@ export default function PrintableDisplayPage({ params }: DisplayPageProps) {
       const canvas = await html2canvas(element, {
         scale: 2, // Resolução alta para impressão
         backgroundColor: '#ffffff',
+        useCORS: true, // Garante que não falhe se houver algo de outra origem
       });
       
       const image = canvas.toDataURL('image/png');
@@ -110,7 +111,7 @@ export default function PrintableDisplayPage({ params }: DisplayPageProps) {
 
         <div className="bg-white p-8 rounded-3xl shadow-xl border-4 border-slate-100 mb-12 print:shadow-none print:border-slate-300">
           {eventUrl && (
-            <QRCodeSVG
+            <QRCodeCanvas
               value={eventUrl}
               size={280}
               level="H"
