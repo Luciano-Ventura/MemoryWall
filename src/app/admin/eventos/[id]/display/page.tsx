@@ -1,76 +1,107 @@
-import React from 'react';
-import { createClient } from '@/lib/supabase/server';
-import { notFound } from 'next/navigation';
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
+import { Download, Loader2 } from 'lucide-react';
+import { createClient } from '@/lib/supabase/client';
+import { notFound } from 'next/navigation';
 
-export default async function PrintableDisplayPage({
-  params
-}: {
-  params: Promise<{ id: string }>
-}) {
-  const { id } = await params;
-  const supabase = await createClient();
+interface DisplayPageProps {
+  params: Promise<{ id: string }>;
+}
 
-  const { data: event, error } = await supabase
-    .from('events')
-    .select('*')
-    .eq('id', id)
-    .single();
+export default function PrintableDisplayPage({ params }: DisplayPageProps) {
+  const [event, setEvent] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [eventUrl, setEventUrl] = useState('');
 
-  if (error || !event) {
-    notFound();
+  useEffect(() => {
+    const load = async () => {
+      const { id } = await params;
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from('events')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error || !data) {
+        setLoading(false);
+        return;
+      }
+
+      setEvent(data);
+      // Usa a origem real do browser — funciona em dev, staging e produção sem .env
+      setEventUrl(`${window.location.origin}/e/${data.slug}`);
+      setLoading(false);
+    };
+    load();
+  }, [params]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-10 h-10 animate-spin text-slate-400" />
+      </div>
+    );
   }
 
-  // A URL que o QR code aponta
-  const eventUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://memorywall.com.br'}/e/${event.slug}`;
+  if (!event) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-slate-500 text-xl">Evento não encontrado.</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-white text-black print:bg-white flex items-center justify-center p-8">
-      
-      {/* Botão flutuante que não aparece na impressão */}
-      <div className="fixed top-4 right-4 print:hidden">
-        <button 
-          id="print-btn"
-          className="bg-slate-800 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:bg-slate-700 transition-colors"
+    <div className="min-h-screen bg-white text-black flex items-center justify-center p-8 print:p-0">
+
+      {/* Botão de download — desaparece na impressão/PDF */}
+      <div className="fixed top-4 right-4 z-50 print:hidden">
+        <button
+          onClick={() => window.print()}
+          className="flex items-center gap-2 bg-slate-900 text-white px-6 py-3 rounded-full font-bold shadow-xl hover:bg-slate-700 active:scale-95 transition-all"
         >
-          Imprimir / Salvar PDF
+          <Download className="w-5 h-5" />
+          Baixar PDF
         </button>
       </div>
 
-      {/* Conteúdo do Display (tamanho folha A4 proporcional) */}
-      <div className="w-full max-w-3xl border-[16px] border-slate-900 rounded-[3rem] p-16 flex flex-col items-center justify-center text-center shadow-2xl print:shadow-none print:border-[12px]">
-        
+      {/* Conteúdo imprimível */}
+      <div className="w-full max-w-3xl border-[16px] border-slate-900 rounded-[3rem] p-16 flex flex-col items-center justify-center text-center shadow-2xl print:shadow-none print:border-[12px] print:rounded-none print:max-w-none print:p-10">
+
         <h2 className="text-2xl font-bold uppercase tracking-[0.2em] text-slate-500 mb-8">
           Participe do nosso álbum
         </h2>
-        
-        <h1 className="text-6xl font-black text-slate-900 mb-12 uppercase leading-tight">
+
+        <h1 className="text-5xl sm:text-6xl font-black text-slate-900 mb-12 uppercase leading-tight">
           {event.name}
         </h1>
 
         <div className="bg-white p-8 rounded-3xl shadow-xl border-4 border-slate-100 mb-12 print:shadow-none print:border-slate-300">
-          <QRCodeSVG 
-            value={eventUrl} 
-            size={300} 
-            level="H"
-            includeMargin={false}
-          />
+          {eventUrl && (
+            <QRCodeSVG
+              value={eventUrl}
+              size={280}
+              level="H"
+              includeMargin={false}
+            />
+          )}
         </div>
 
-        <p className="text-3xl font-medium text-slate-700 max-w-lg leading-relaxed">
+        <p className="text-2xl sm:text-3xl font-medium text-slate-700 max-w-lg leading-relaxed">
           Aponte a câmera do seu celular para o QR Code e envie suas melhores fotos da festa!
         </p>
 
         <div className="mt-16 w-32 h-2 bg-slate-900 rounded-full" />
-      </div>
 
-      {/* Script inline simples para lidar com o click */}
-      <script dangerouslySetInnerHTML={{
-        __html: `
-          const btn = document.getElementById('print-btn');
-          if (btn) btn.onclick = () => window.print();
-        `
-      }} />
+        {/* URL legível abaixo do QR */}
+        <p className="mt-6 text-base text-slate-400 font-mono break-all">
+          {eventUrl}
+        </p>
+      </div>
     </div>
   );
 }
+
