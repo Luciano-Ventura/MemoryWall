@@ -5,6 +5,7 @@ import { QRCodeSVG } from 'qrcode.react';
 import { Download, Loader2 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { notFound } from 'next/navigation';
+import html2canvas from 'html2canvas';
 
 interface DisplayPageProps {
   params: Promise<{ id: string }>;
@@ -14,6 +15,7 @@ export default function PrintableDisplayPage({ params }: DisplayPageProps) {
   const [event, setEvent] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [eventUrl, setEventUrl] = useState('');
+  const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -38,6 +40,32 @@ export default function PrintableDisplayPage({ params }: DisplayPageProps) {
     load();
   }, [params]);
 
+  const handleDownload = async () => {
+    const element = document.getElementById('printable-display');
+    if (!element) return;
+    
+    try {
+      setDownloading(true);
+      const canvas = await html2canvas(element, {
+        scale: 2, // Resolução alta para impressão
+        backgroundColor: '#ffffff',
+      });
+      
+      const image = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.href = image;
+      link.download = `display-${event?.slug || 'evento'}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (err) {
+      console.error('Error generating image:', err);
+      alert('Erro ao gerar a imagem.');
+    } finally {
+      setDownloading(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -60,16 +88,17 @@ export default function PrintableDisplayPage({ params }: DisplayPageProps) {
       {/* Botão de download — desaparece na impressão/PDF */}
       <div className="fixed top-4 right-4 z-50 print:hidden">
         <button
-          onClick={() => window.print()}
-          className="flex items-center gap-2 bg-slate-900 text-white px-6 py-3 rounded-full font-bold shadow-xl hover:bg-slate-700 active:scale-95 transition-all"
+          onClick={handleDownload}
+          disabled={downloading}
+          className="flex items-center gap-2 bg-slate-900 text-white px-6 py-3 rounded-full font-bold shadow-xl hover:bg-slate-700 active:scale-95 transition-all disabled:opacity-50"
         >
-          <Download className="w-5 h-5" />
-          Baixar PDF
+          {downloading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Download className="w-5 h-5" />}
+          {downloading ? 'Baixando...' : 'Baixar Imagem'}
         </button>
       </div>
 
       {/* Conteúdo imprimível */}
-      <div className="w-full max-w-3xl border-[16px] border-slate-900 rounded-[3rem] p-16 flex flex-col items-center justify-center text-center shadow-2xl print:shadow-none print:border-[12px] print:rounded-none print:max-w-none print:p-10">
+      <div id="printable-display" className="w-full max-w-3xl border-[16px] border-slate-900 rounded-[3rem] p-16 flex flex-col items-center justify-center text-center shadow-2xl print:shadow-none print:border-[12px] print:rounded-none print:max-w-none print:p-10">
 
         <h2 className="text-2xl font-bold uppercase tracking-[0.2em] text-slate-500 mb-8">
           Participe do nosso álbum
