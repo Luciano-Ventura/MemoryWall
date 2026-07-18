@@ -143,19 +143,19 @@ export default function DisplayWall({ eventId, animationStyle }: DisplayWallProp
           transition={{ duration: 0.8, type: "spring", bounce: 0.4 }}
           className="w-full max-w-[90vw] 2xl:max-w-[85vw] mx-auto relative z-10"
         >
-          <div className="bg-white/95 backdrop-blur-xl p-10 md:p-16 rounded-[4rem] shadow-2xl relative flex flex-col md:flex-row items-center gap-16"
+          <div className="bg-white/95 backdrop-blur-xl p-6 sm:p-10 md:p-16 rounded-[2rem] sm:rounded-[3rem] md:rounded-[4rem] shadow-2xl relative flex flex-col md:flex-row items-center gap-8 sm:gap-12 md:gap-16"
                style={{ borderBottom: '16px solid var(--theme-primary)' }}>
             
             {/* Elemento decorativo de aspas */}
             {currentItem.message && (
-               <span className="text-[15rem] absolute -top-12 -left-4 opacity-5 font-display leading-none z-0 pointer-events-none" style={{ color: 'var(--theme-primary)' }}>"</span>
+               <span className="text-[10rem] md:text-[15rem] absolute -top-12 -left-4 opacity-5 font-display leading-none z-0 pointer-events-none" style={{ color: 'var(--theme-primary)' }}>"</span>
             )}
 
             {currentItem.photo_url && (
               <div className={`relative z-10 flex-shrink-0 w-full ${currentItem.message ? 'md:w-1/2' : 'max-w-3xl mx-auto'}`}>
                 {/* Polaroid styling */}
-                <div className="bg-white p-5 pb-10 md:pb-16 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] transform -rotate-2 hover:rotate-0 transition-transform duration-500">
-                  <div className="relative w-full h-[55vh] md:h-[650px] bg-slate-100 rounded-2xl overflow-hidden flex items-center justify-center">
+                <div className="bg-white p-3 sm:p-5 pb-8 sm:pb-10 md:pb-16 rounded-[1.5rem] sm:rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] transform -rotate-2 hover:rotate-0 transition-transform duration-500">
+                  <div className="relative w-full h-[35vh] sm:h-[50vh] md:h-[500px] lg:h-[600px] bg-slate-100 rounded-xl sm:rounded-2xl overflow-hidden flex items-center justify-center">
                      {/* Blurred background for padding */}
                      <div 
                        className="absolute inset-0 bg-cover bg-center blur-2xl scale-125 opacity-40" 
@@ -172,12 +172,12 @@ export default function DisplayWall({ eventId, animationStyle }: DisplayWallProp
             )}
             
             {currentItem.message && (
-              <div className={`flex-1 flex flex-col justify-center relative z-10 ${!currentItem.photo_url ? 'items-center text-center w-full max-w-5xl mx-auto py-16' : ''}`}>
-                <p className={`${currentItem.photo_url ? 'text-5xl md:text-6xl' : 'text-6xl md:text-8xl'} font-body leading-tight whitespace-pre-wrap font-medium`} style={{ color: 'var(--theme-text)' }}>
+              <div className={`flex-1 flex flex-col justify-center relative z-10 ${!currentItem.photo_url ? 'items-center text-center w-full max-w-5xl mx-auto py-8 sm:py-16' : ''}`}>
+                <p className={`${currentItem.photo_url ? 'text-2xl sm:text-4xl md:text-5xl lg:text-6xl' : 'text-3xl sm:text-5xl md:text-7xl lg:text-8xl'} font-body leading-tight whitespace-pre-wrap font-medium`} style={{ color: 'var(--theme-text)' }}>
                   {currentItem.message}
                 </p>
                 {currentItem.guest_name && (
-                  <p className={`${currentItem.photo_url ? 'text-3xl md:text-4xl' : 'text-4xl md:text-5xl'} font-display font-bold mt-12 text-right`} style={{ color: 'var(--theme-primary)' }}>
+                  <p className={`${currentItem.photo_url ? 'text-xl sm:text-2xl md:text-3xl lg:text-4xl' : 'text-2xl sm:text-3xl md:text-4xl lg:text-5xl'} font-display font-bold mt-6 sm:mt-8 md:mt-12 text-right`} style={{ color: 'var(--theme-primary)' }}>
                     — {currentItem.guest_name}
                   </p>
                 )}

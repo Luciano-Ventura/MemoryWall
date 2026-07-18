@@ -141,7 +141,7 @@ export default function LandingPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className={`text-6xl md:text-8xl font-bold tracking-tight mb-6 ${playfair.className} bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60 drop-shadow-sm`}
+            className={`text-4xl sm:text-6xl md:text-8xl font-bold tracking-tight mb-6 ${playfair.className} bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60 drop-shadow-sm`}
           >
             Eternize momentos,<br/>em tempo real.
           </motion.h1>
@@ -250,7 +250,7 @@ export default function LandingPage() {
             <p className="text-xl text-white/50 max-w-2xl font-light">Uma suíte completa para gerenciar, moderar e encantar. Feito para eventos que buscam excelência.</p>
           </FadeIn>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[250px]">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:auto-rows-[250px]">
             {/* Card 1: Telão (Ocupa 2 colunas) */}
             <FadeIn delay={0.1} className="md:col-span-2 md:row-span-2 group relative rounded-[2rem] overflow-hidden bg-[#111] border border-white/10 hover:border-white/20 transition-colors">
               <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>

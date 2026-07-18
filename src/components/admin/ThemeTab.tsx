@@ -183,8 +183,8 @@ export default function ThemeTab({ theme, eventId }: { theme: any, eventId: stri
       </div>
 
       {/* Live Preview (Simulado) */}
-      <div className="w-full lg:w-80 flex flex-col gap-4">
-        <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider">Preview (Celular)</h4>
+      <div className="w-full max-w-[300px] mx-auto lg:mx-0 lg:w-80 flex flex-col gap-4">
+        <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider text-center lg:text-left">Preview (Celular)</h4>
         <div 
           className="w-full aspect-[9/19] rounded-[2rem] border-[8px] border-slate-900 shadow-xl overflow-hidden relative flex flex-col transition-colors duration-500 bg-cover bg-center"
           style={{ 

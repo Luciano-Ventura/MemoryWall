@@ -48,17 +48,17 @@ export default function QrCodeTab({ event }: { event: any }) {
         />
       </div>
 
-      <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row gap-3 w-full max-w-xs sm:max-w-none sm:w-auto px-4 justify-center">
         <button 
           onClick={handleDownload}
-          className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors"
+          className="flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors w-full sm:w-auto"
         >
           <Download className="w-5 h-5" />
           Baixar PNG
         </button>
         <button 
           onClick={() => window.print()}
-          className="flex items-center gap-2 px-6 py-3 border border-slate-300 text-slate-700 hover:bg-slate-50 font-semibold rounded-lg transition-colors"
+          className="flex items-center justify-center gap-2 px-6 py-3 border border-slate-300 text-slate-700 hover:bg-slate-50 font-semibold rounded-lg transition-colors w-full sm:w-auto"
         >
           <Printer className="w-5 h-5" />
           Imprimir

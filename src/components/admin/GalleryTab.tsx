@@ -91,7 +91,7 @@ export default function GalleryTab({ eventId }: { eventId: string }) {
                 <img src={sub.photo_url} alt="Envio" className="absolute inset-0 w-full h-full object-cover" />
                 <button 
                   onClick={() => handleDelete(sub.id, sub.photo_url)}
-                  className="absolute top-2 right-2 p-2 bg-white/90 hover:bg-red-50 text-slate-400 hover:text-red-600 rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-all"
+                  className="absolute top-2 right-2 p-2 bg-white/90 hover:bg-red-50 text-slate-400 hover:text-red-600 rounded-full shadow-sm opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all"
                   title="Excluir Foto"
                 >
                   <Trash2 className="w-5 h-5" />
@@ -103,7 +103,7 @@ export default function GalleryTab({ eventId }: { eventId: string }) {
                 <span className="text-xs">Apenas Texto</span>
                 <button 
                   onClick={() => handleDelete(sub.id, sub.photo_url)}
-                  className="absolute top-2 right-2 p-2 bg-white/90 hover:bg-red-50 text-slate-400 hover:text-red-600 rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-all"
+                  className="absolute top-2 right-2 p-2 bg-white/90 hover:bg-red-50 text-slate-400 hover:text-red-600 rounded-full shadow-sm opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all"
                   title="Excluir"
                 >
                   <Trash2 className="w-5 h-5" />
