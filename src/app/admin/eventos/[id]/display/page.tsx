@@ -5,7 +5,7 @@ import { QRCodeCanvas } from 'qrcode.react';
 import { Download, Loader2 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { notFound } from 'next/navigation';
-import html2canvas from 'html2canvas';
+import * as htmlToImage from 'html-to-image';
 
 interface DisplayPageProps {
   params: Promise<{ id: string }>;
@@ -46,22 +46,20 @@ export default function PrintableDisplayPage({ params }: DisplayPageProps) {
     
     try {
       setDownloading(true);
-      const canvas = await html2canvas(element, {
-        scale: 2, // Resolução alta para impressão
+      const dataUrl = await htmlToImage.toPng(element, {
+        pixelRatio: 2, // Resolução alta para impressão
         backgroundColor: '#ffffff',
-        useCORS: true, // Garante que não falhe se houver algo de outra origem
       });
       
-      const image = canvas.toDataURL('image/png');
       const link = document.createElement('a');
-      link.href = image;
+      link.href = dataUrl;
       link.download = `display-${event?.slug || 'evento'}.png`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error generating image:', err);
-      alert('Erro ao gerar a imagem.');
+      alert('Erro ao gerar a imagem: ' + (err?.message || ''));
     } finally {
       setDownloading(false);
     }
